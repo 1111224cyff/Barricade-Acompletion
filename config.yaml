@@ -1,0 +1,16 @@
+# config.yaml
+
+# 项目的根目录路径
+data_directory: "./data"
+
+pitch_angles:
+  - pitch0-30
+  - pitch30-50
+  - pitch50-80
+
+categories:
+  0: "excavator"
+  1: "plastic_fence"
+  2: "steel_fence"
+  3: "opening"
+  4: "person"
