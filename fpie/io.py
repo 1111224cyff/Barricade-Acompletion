@@ -51,12 +51,14 @@ def copy_label(label_path: str, output_dir: str, count: int) -> None:
     except Exception as e:
         print(f"复制文件时出错：{e}")
 
+
 def get_file_paths(directory: str, extensions: tuple) -> list:
     """获取指定目录下的所有指定扩展名文件路径"""
     return [
         f for f in os.listdir(directory)
         if f.lower().endswith(extensions)
     ]
+
 
 def create_mask(img_path: str, label_path: str, output_dir: str) -> None:
     # 读取原图和标签文件路径，生成蒙版图像

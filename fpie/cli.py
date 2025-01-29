@@ -125,7 +125,7 @@ def main() -> None:
     args = get_args("cli")
     config = load_config("config.yaml")
     # 从YAML文件中获取项目根目录路径及pitch_angles
-    data_dir = config.get('data_directory', "./data")
+    data_dir = config.get('preprocess_data_dir', "./data/preprocess")
     pitch_list = config.get('pitch_angles')
 
     if not pitch_list:
@@ -152,7 +152,7 @@ def main() -> None:
             # 原图、原图标签、蒙版、目标图、输出、保存挖掘机掩码文件目录
             src_dir = DatasetPaths(os.path.join(data_dir, "src"), pitch_angle)
             tgt_dir = DatasetPaths(os.path.join(data_dir, "tgt"), pitch_angle)
-            output_dir = DatasetPaths(os.path.join(data_dir, "sythetic_data"))
+            output_dir = DatasetPaths(os.path.join(data_dir, "synthetic_data"))
             output_dir.create_directories()
 
             count = process_images(
