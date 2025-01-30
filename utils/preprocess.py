@@ -37,8 +37,8 @@ def process_annotations(image_dir, labels_dir, categories, output_json=None, mas
     images, annotations = [], []
     image_id, annotation_id = 1, 1
 
-    # 目标存放目录 ../data/{data_dir}/infer/
-    infer_dir = os.path.join("../data", data_dir, "infer")
+    # 目标存放目录 data/{data_dir}/infer/
+    infer_dir = os.path.join(data_dir, "infer")
     os.makedirs(infer_dir, exist_ok=True)  # 创建 infer 目录
 
     if mask_output_dir and not os.path.exists(mask_output_dir):
@@ -154,11 +154,10 @@ def split_and_generate_json(synthetic_data_dir, categories, split_ratio=0.8, dat
     labels_dir = os.path.join(synthetic_data_dir, "labels", "merged_labels")
 
     # 定义目标目录结构
-    data_root_dir = os.path.join("../data", data_dir)
-    annotations_dir = os.path.join("../data", data_dir, "annotations")
+    annotations_dir = os.path.join(data_dir, "annotations")
 
     # 创建目录
-    os.makedirs(data_root_dir, exist_ok=True)
+    os.makedirs(data_dir, exist_ok=True)
     os.makedirs(annotations_dir, exist_ok=True)
 
     # 创建 train 和 val 的子文件夹（仍然在原 images 目录下）
@@ -187,46 +186,45 @@ def split_and_generate_json(synthetic_data_dir, categories, split_ratio=0.8, dat
             labels_dir=labels_dir,
             categories=categories,
             output_json=output_json,
-            data_dir=data_root_dir
+            data_dir=data_dir
         )
 
     # 移动 train 和 val 目录
-    shutil.move(train_dir, os.path.join(data_root_dir, "train"))
-    shutil.move(val_dir, os.path.join(data_root_dir, "val"))
+    shutil.move(train_dir, os.path.join(data_dir, "train"))
+    shutil.move(val_dir, os.path.join(data_dir, "val"))
 
-    print(f"Images moved to {data_root_dir}")
+    print(f"Images moved to {data_dir}")
     print(f"Annotations saved in {annotations_dir}")
 
 
 
-# 示例调用
+# **主函数**
 if __name__ == "__main__":
-    synthetic_data_dir = r"..\data\preprocess\synthetic_data"
-    config_path = r"..\config.yaml"
+    # 读取配置文件
+    config_path = "config.yaml"
+    synthetic_data_dir = os.path.join("data", "preprocess", "synthetic_data")
 
-    # 读取配置文件，获取 categories
     config = load_config(config_path)
     categories = config.get('categories', {})
-    split_ratio = config.get('split_ratio', 0.7)  # 允许配置文件覆盖 split_ratio
-    data_dir = config.get('data_dir', 'barricade')
+    split_ratio = config.get('split_ratio', 0.7)
+    data_dir = os.path.join("data", config.get('data_dir', 'barricade'))
 
     # 处理训练集和验证集划分
     split_and_generate_json(synthetic_data_dir, categories, split_ratio, data_dir)
 
-    # 生成用于ASBU推理数据（这里才复制图片！）
-    image_dir = r"..\data\yolo_segment\images"
-    labels_dir = r"..\data\yolo_segment\labels"
-    output_path = os.path.join("../data", data_dir, "annotations", "infer.json")
-    mask_output_dir = r"..\data\yolo_segment\mask"
+    # 生成用于 ASBU 推理数据
+    image_dir = os.path.join("data", "yolo_segment", "images")
+    labels_dir = os.path.join("data", "yolo_segment", "labels")
+    output_path = os.path.join(data_dir, "annotations", "infer.json")
+    mask_output_dir = os.path.join("data", "yolo_segment", "mask")
 
-    # 生成用于ASBU推测的json，**并且复制图片**
+    # 生成用于 ASBU 推测的 JSON，并且复制图片
     process_annotations(image_dir,
                         labels_dir,
                         categories,
                         output_json=output_path,
                         mask_output_dir=mask_output_dir,
                         data_dir=data_dir,
-                        copy_images=True  # ✅ 只有这里复制图片
-                        )
+                        copy_images=True)  # ✅ 只有这里复制图片
 
 
