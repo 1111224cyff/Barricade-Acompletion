@@ -51,7 +51,7 @@ data:
     use_default: False # use boundary 改了
     use_matting: False
 
-    categories: ['excavator', 'plastic_fence', 'steel_fence', 'opening', 'person'] # 自己加的
+    categories: ['excavator', 'plastic_fence', 'steel_fence', 'person'] # 自己加的
 
 trainer:
     initial_val: True
