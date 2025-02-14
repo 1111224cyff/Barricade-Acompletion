@@ -77,3 +77,9 @@ split_ratio:
   0.7
 ```
 
+## Acknowledgement
+
+我在下列代码的基础上进行了开发：
+
+1. https://github.com/Trinkle23897/Fast-Poisson-Image-Editing
+2. https://github.com/ducminhkhoi/Amodal-Instance-Seg-ASBU?tab=readme-ov-file
